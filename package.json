@@ -5,11 +5,11 @@
   "main": "dist/index.js",
   "module": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"TODO: Add tests\" && exit 1",
     "bundle": "rollup -c"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["IntersectionObserver", "viewport", "is-in-viewport"],
+  "author": "Mudit Ameta <zeusdeux@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "auto-curry": "^0.2.1"
@@ -25,5 +25,13 @@
     "rollup": "^0.58.2",
     "rollup-plugin-commonjs": "^9.1.3",
     "rollup-plugin-node-resolve": "^3.3.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zeusdeux/observe-element-in-viewport.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zeusdeux/observe-element-in-viewport/issues"
+  },
+  "homepage": "https://github.com/zeusdeux/observe-element-in-viewport#readme"
 }
