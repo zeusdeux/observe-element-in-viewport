@@ -6,13 +6,19 @@
   "module": "src/index.js",
   "scripts": {
     "test": "echo \"TODO: Add tests\" && exit 1",
-    "bundle": "rollup -c"
+    "bundle": "rollup -c",
+    "watch": "fswatch -0 -o src/index.ts ./rollup.config.js ./tsconfig.json | xargs -0 -n1 -I% `which bash` -c 'echo \"----Starting bundling at $(date)---\" && npm run bundle && echo \"----Done bundling at $(date)---\"'"
   },
-  "keywords": ["IntersectionObserver", "viewport", "is-in-viewport"],
+  "keywords": [
+    "IntersectionObserver",
+    "viewport",
+    "is-in-viewport"
+  ],
   "author": "Mudit Ameta <zeusdeux@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "auto-curry": "^0.2.1"
+    "auto-curry": "^0.2.1",
+    "typescript": "^2.8.3"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
@@ -24,7 +30,9 @@
     "prettier": "^1.12.1",
     "rollup": "^0.58.2",
     "rollup-plugin-commonjs": "^9.1.3",
-    "rollup-plugin-node-resolve": "^3.3.0"
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-sourcemaps": "^0.4.2",
+    "rollup-plugin-typescript": "^0.8.1"
   },
   "repository": {
     "type": "git",
