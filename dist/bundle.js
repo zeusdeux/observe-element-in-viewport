@@ -48,7 +48,7 @@
           // percentage of el that should intersect with viewport to consinder
           // it "in viewport". 0 means on the 1st pixel intersection or exit,
           // the respective handler will be called
-          threshold: []
+          threshold: [0]
       };
       const { viewport, modTop, modLeft, modBottom, modRight, threshold } = Object.assign({}, defaultOptions, opts);
       // The mod 101 is to prevent threshold from being greater than 1
