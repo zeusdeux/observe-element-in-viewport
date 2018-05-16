@@ -38,7 +38,7 @@ function _observeElementInViewport(
     // percentage of el that should intersect with viewport to consinder
     // it "in viewport". 0 means on the 1st pixel intersection or exit,
     // the respective handler will be called
-    threshold: []
+    threshold: [0]
   }
 
   const {
