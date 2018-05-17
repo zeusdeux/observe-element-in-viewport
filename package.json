@@ -17,7 +17,6 @@
   "author": "Mudit Ameta <zeusdeux@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "auto-curry": "^0.2.1",
     "typescript": "^2.8.3"
   },
   "devDependencies": {
