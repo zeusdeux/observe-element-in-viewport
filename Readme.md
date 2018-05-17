@@ -7,7 +7,9 @@ viewport.
 
 ## Installation
 
-coming soon (not published to npm yet)
+```js
+npm install observe-element-in-viewport
+```
 
 ## Usage
 
