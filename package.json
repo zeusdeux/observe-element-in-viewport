@@ -1,9 +1,9 @@
 {
   "name": "observe-element-in-viewport",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
-  "main": "dist/index.js",
-  "module": "src/index.js",
+  "main": "dist/bundle.js",
+  "module": "src/index.ts",
   "scripts": {
     "test": "echo \"TODO: Add tests\" && exit 1",
     "bundle": "rollup -c",
