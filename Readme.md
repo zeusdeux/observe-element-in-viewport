@@ -14,7 +14,7 @@ coming soon (not published to npm yet)
 ### Observing a `target` element
 
 ```js
-import { observeElementInViewport, isInViewport } from 'observe-element-in-viewport'
+import { observeElementInViewport } from 'observe-element-in-viewport'
 
 // to use window as viewport, pass this option as null
 const viewport = document.querySelector('.viewport')
@@ -30,11 +30,11 @@ const outHandler = (entry, unobserve, targetEl) => console.log('Not in viewport'
 
 // the returned function, when called, stops tracking the target element in the
 // given viewport
-const unobserve = observeElementInViewport({
+const unobserve = observeElementInViewport(target, inHandler, outHandler, {
   // set viewport
-  root: viewport,
+  viewport,
 
-  // decrease viewport top by 10px
+  // decrease viewport top by 100px
   // similar to this, modRight, modBottom and modLeft exist
   modTop: '-100px'
 
@@ -42,10 +42,10 @@ const unobserve = observeElementInViewport({
   // a threshold of 90 means, trigger the inHandler when atleast 90%
   // of target is visible. It triggers the outHandler when the amount of
   // visible portion of the target falls below 90%.
-  // If this has more than one value, the lowest threshold is what marks the
-  // target as having left the viewport
+  // If this array has more than one value, the lowest threshold is what
+  // marks the target as having left the viewport
   threshold: [90]
-}, inHandler, outHandler, target)
+})
 ```
 
 ### One time query to check if `target` element is in viewport
