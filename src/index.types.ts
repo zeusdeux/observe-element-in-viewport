@@ -13,4 +13,4 @@ export interface CustomEntry extends IntersectionObserverEntry {
 
 export type UnobserveFn = () => void
 
-export type Handler = (entry: CustomEntry, unobserveFn: UnobserveFn, el?: HTMLElement) => undefined
+export type Handler = (entry: CustomEntry, unobserveFn: UnobserveFn, el: HTMLElement) => any

@@ -1,4 +1,3 @@
-import cu from 'auto-curry'
 import { Options, Handler, CustomEntry, UnobserveFn } from './index.types'
 
 /**
@@ -18,12 +17,16 @@ import { Options, Handler, CustomEntry, UnobserveFn } from './index.types'
  *
  * @return {function} unobserve element function
  */
-function _observeElementInViewport(
-  opts: Options,
+export function observeElementInViewport(
+  el: HTMLElement | null,
   inHandler: Handler,
   outHandler: Handler,
-  el: HTMLElement
+  opts: Partial<Options>
 ): UnobserveFn {
+  if (!el) {
+    throw new Error('Target element to observe should be a valid DOM Node')
+  }
+
   const defaultOptions: Options = {
     // null for window, otherwise give css selector.
     // el to be observed should be a child of element given by this selector
@@ -53,7 +56,7 @@ function _observeElementInViewport(
   // The mod 101 is to prevent threshold from being greater than 1
   const thresholdArray: number[] = Array.isArray(threshold)
     ? threshold.map(t => Math.floor(t % 101) / 100)
-    : [Math.floor(threshold % 101) / 100]
+    : [Math.floor(threshold ? threshold % 101 : 0) / 100]
 
   const minThreshold: number = Math.min(...thresholdArray)
 
@@ -100,25 +103,26 @@ function _observeElementInViewport(
   return () => observer.unobserve(el)
 }
 
-export const observeElementInViewport = cu(_observeElementInViewport)
-
-export const isInViewport = cu(async (el: HTMLElement, opts: Options) => {
+export const isInViewport = async (
+  el: HTMLElement | null,
+  opts: Partial<Options>
+) => {
   return new Promise((resolve, reject) => {
     try {
       observeElementInViewport(
-        opts,
-        <Handler>((_, unobserve) => {
+        el,
+        (_, unobserve) => {
           unobserve()
           resolve(true)
-        }),
-        <Handler>((_, unobserve) => {
+        },
+        (_, unobserve) => {
           unobserve()
           resolve(false)
-        }),
-        el
+        },
+        opts
       )
     } catch (e) {
       reject(e)
     }
   })
-})
+}
