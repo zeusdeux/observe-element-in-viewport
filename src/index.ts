@@ -1,4 +1,19 @@
-import { Options, Handler, CustomEntry, UnobserveFn } from './index.types'
+interface Options {
+  viewport: null | HTMLElement
+  modTop: string
+  modRight: string
+  modBottom: string
+  modLeft: string
+  threshold: number[]
+}
+
+interface CustomEntry extends IntersectionObserverEntry {
+  isInViewport?: boolean
+}
+
+type UnobserveFn = () => void
+
+type Handler = (entry: CustomEntry, unobserveFn: UnobserveFn, el: HTMLElement) => any
 
 /**
  * Given a set of options, DOM node and in and out of viewport handlers,
@@ -18,7 +33,7 @@ import { Options, Handler, CustomEntry, UnobserveFn } from './index.types'
  * @return {function} unobserve element function
  */
 export function observeElementInViewport(
-  el: HTMLElement | null,
+  el: HTMLElement,
   inHandler: Handler,
   outHandler: Handler,
   opts: Partial<Options>
@@ -44,14 +59,11 @@ export function observeElementInViewport(
     threshold: [0]
   }
 
-  const {
-    viewport,
-    modTop,
-    modLeft,
-    modBottom,
-    modRight,
-    threshold
-  }: Options = Object.assign({}, defaultOptions, opts)
+  const { viewport, modTop, modLeft, modBottom, modRight, threshold }: Options = Object.assign(
+    {},
+    defaultOptions,
+    opts
+  )
 
   // The mod 101 is to prevent threshold from being greater than 1
   const thresholdArray: number[] = Array.isArray(threshold)
@@ -71,22 +83,22 @@ export function observeElementInViewport(
   }
 
   const isDebugEnabled: boolean =
-    localStorage.debug &&
-    localStorage.debug.includes('observeElementInViewport')
+    localStorage.debug && localStorage.debug.includes('observeElementInViewport')
 
   if (isDebugEnabled) {
+    /* tslint:disable:no-console */
     console.log('IntersectionObserver options', intersectionObserverOptions)
+    /* tslint:enable:no-console */
   }
 
-  const cb = (entries: Array<CustomEntry>, observer: IntersectionObserver) => {
+  const cb = (entries: CustomEntry[], observer: IntersectionObserver) => {
     const entryForEl = entries.filter(entry => entry.target === el)[0]
     const unobserve: UnobserveFn = () => observer.unobserve(el)
 
     if (entryForEl) {
       const { isIntersecting, intersectionRatio } = entryForEl
 
-      entryForEl.isInViewport =
-        isIntersecting && intersectionRatio >= minThreshold
+      entryForEl.isInViewport = isIntersecting && intersectionRatio >= minThreshold
 
       if (entryForEl.isInViewport) {
         inHandler(entryForEl, unobserve, el)
@@ -96,17 +108,14 @@ export function observeElementInViewport(
     }
   }
 
-  const observer = new IntersectionObserver(cb, intersectionObserverOptions)
+  const intersectionObserver = new IntersectionObserver(cb, intersectionObserverOptions)
 
-  observer.observe(el)
+  intersectionObserver.observe(el)
 
-  return () => observer.unobserve(el)
+  return () => intersectionObserver.unobserve(el)
 }
 
-export const isInViewport = async (
-  el: HTMLElement | null,
-  opts: Partial<Options>
-) => {
+export const isInViewport = async (el: HTMLElement, opts: Partial<Options>) => {
   return new Promise((resolve, reject) => {
     try {
       observeElementInViewport(
