@@ -68,4 +68,4 @@ console.log(await isInViewport(target))
 
 ## Demo
 
-[Try it here](https://examples-sabxehnbam.now.sh)
+[Try it here](https://examples-thugvageqz.now.sh/)
