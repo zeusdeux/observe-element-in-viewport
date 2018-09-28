@@ -15,6 +15,23 @@ type UnobserveFn = () => void
 
 type Handler = (entry: CustomEntry, unobserveFn: UnobserveFn, el: HTMLElement) => any
 
+const defaultOptions: Options = {
+  // null for window, otherwise give css selector.
+  // el to be observed should be a child of element given by this selector
+  viewport: null,
+
+  // accepts px and %
+  modTop: '0px',
+  modRight: '0px',
+  modBottom: '0px',
+  modLeft: '0px',
+
+  // percentage of el that should intersect with viewport to consinder
+  // it "in viewport". 0 means on the 1st pixel intersection or exit,
+  // the respective handler will be called
+  threshold: [0]
+}
+
 /**
  * Given a set of options, DOM node and in and out of viewport handlers,
  * this function uses an IntersectionObserver to figure out whether
@@ -23,12 +40,12 @@ type Handler = (entry: CustomEntry, unobserveFn: UnobserveFn, el: HTMLElement) =
  * common order so as to make it easier to observe multiple DOM nodes
  * with the same settings/options and maybe even the same handlers.
  *
- * @param {object} opts - options to configure the viewport
+ * @param {Node} el - target element to observe
  * and intersection threshold
  * @param {function} inHandler - fn to call when element is in viewport
  * for each given threshhold
  * @param {function} outHandler - fn to call when element leaves viewport
- * @param {Node} el - target element to observe
+ * @param {object} opts - options to configure the viewport
  *
  * @return {function} unobserve element function
  */
@@ -42,28 +59,15 @@ export function observeElementInViewport(
     throw new Error('Target element to observe should be a valid DOM Node')
   }
 
-  const defaultOptions: Options = {
-    // null for window, otherwise give css selector.
-    // el to be observed should be a child of element given by this selector
-    viewport: null,
-
-    // accepts px and %
-    modTop: '0px',
-    modRight: '0px',
-    modBottom: '0px',
-    modLeft: '0px',
-
-    // percentage of el that should intersect with viewport to consinder
-    // it "in viewport". 0 means on the 1st pixel intersection or exit,
-    // the respective handler will be called
-    threshold: [0]
-  }
-
   const { viewport, modTop, modLeft, modBottom, modRight, threshold }: Options = Object.assign(
     {},
     defaultOptions,
     opts
   )
+
+  if (!Array.isArray(threshold) && !(typeof threshold === 'number')) {
+    throw new Error('threshold should be a number or an array of numbers')
+  }
 
   // The mod 101 is to prevent threshold from being greater than 1
   const thresholdArray: number[] = Array.isArray(threshold)
@@ -71,10 +75,6 @@ export function observeElementInViewport(
     : [Math.floor(threshold ? threshold % 101 : 0) / 100]
 
   const minThreshold: number = Math.min(...thresholdArray)
-
-  if (!Array.isArray(threshold) && !(typeof threshold === 'number')) {
-    throw new Error('threshold should be a number or an array of numbers')
-  }
 
   const intersectionObserverOptions: IntersectionObserverInit = {
     root: viewport instanceof Node ? viewport : null,
@@ -91,8 +91,8 @@ export function observeElementInViewport(
     /* tslint:enable:no-console */
   }
 
-  const cb = (entries: CustomEntry[], observer: IntersectionObserver) => {
-    const entryForEl = entries.filter(entry => entry.target === el)[0]
+  const cb = (entries: IntersectionObserverEntry[], observer: IntersectionObserver): void => {
+    const entryForEl: CustomEntry = entries.filter(entry => entry.target === el)[0]
     const unobserve: UnobserveFn = () => observer.unobserve(el)
 
     if (entryForEl) {
@@ -115,7 +115,12 @@ export function observeElementInViewport(
   return () => intersectionObserver.unobserve(el)
 }
 
-export const isInViewport = async (el: HTMLElement, opts: Partial<Options>) => {
+// The function can return Promise that resolves to boolean or an object since in JS
+// anything can be thrown thus we cannot not know what we reject with in the catch block
+export const isInViewport = async (
+  el: HTMLElement,
+  opts: Partial<Options>
+): Promise<boolean | {}> => {
   return new Promise((resolve, reject) => {
     try {
       observeElementInViewport(
