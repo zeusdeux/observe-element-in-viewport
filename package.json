@@ -1,6 +1,6 @@
 {
   "name": "observe-element-in-viewport",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Wrapper around IntersectionObserver to hide away its weirdness and increase ease of usability",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
