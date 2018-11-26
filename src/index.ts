@@ -1,5 +1,5 @@
 interface Options {
-  viewport: null | HTMLElement
+  viewport: null | Element
   modTop: string
   modRight: string
   modBottom: string
@@ -13,7 +13,7 @@ interface CustomEntry extends IntersectionObserverEntry {
 
 type UnobserveFn = () => void
 
-type Handler = (entry: CustomEntry, unobserveFn: UnobserveFn, el: HTMLElement) => any
+type Handler = (entry: CustomEntry, unobserveFn: UnobserveFn, el: Element) => any
 
 const defaultOptions: Options = {
   // null for window, otherwise give css selector.
@@ -50,10 +50,10 @@ const defaultOptions: Options = {
  * @return {function} unobserve element function
  */
 export function observeElementInViewport(
-  el: HTMLElement,
+  el: Element | null,
   inHandler: Handler,
-  outHandler: Handler,
-  opts: Partial<Options>
+  outHandler: Handler = () => undefined,
+  opts: Partial<Options> = {}
 ): UnobserveFn {
   if (!el) {
     throw new Error('Target element to observe should be a valid DOM Node')
@@ -118,8 +118,8 @@ export function observeElementInViewport(
 // The function can return Promise that resolves to boolean or an object since in JS
 // anything can be thrown thus we cannot not know what we reject with in the catch block
 export const isInViewport = async (
-  el: HTMLElement,
-  opts: Partial<Options>
+  el: Element | null,
+  opts: Partial<Options> = {}
 ): Promise<boolean | {}> => {
   return new Promise((resolve, reject) => {
     try {
