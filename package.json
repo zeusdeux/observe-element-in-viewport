@@ -7,9 +7,10 @@
   "module": "src/index.ts",
   "scripts": {
     "test": "echo \"TODO: Add tests\" && exit 1",
-    "prepare": "tsc --project . && npm run bundle",
+    "build": "tsc --project .",
+    "prepare": "npm run build && npm run bundle",
     "bundle": "rollup -c",
-    "watch": "fswatch -0 -o src/index.ts ./rollup.config.js ./tsconfig.json | xargs -0 -n1 -I% `which bash` -c 'echo \"----Starting bundling at $(date)---\" && npm run bundle && echo \"----Done bundling at $(date)---\"'"
+    "watch": "fswatch -0 -o src/index.ts ./rollup.config.js ./tsconfig.json | xargs -0 -n1 -I% `which bash` -c 'echo \"----Starting building and bundling at $(date)---\" && npm run build && npm run bundle && echo \"----Done building and bundling at $(date)---\"'"
   },
   "keywords": [
     "IntersectionObserver",
