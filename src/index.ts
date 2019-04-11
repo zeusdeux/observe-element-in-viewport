@@ -1,4 +1,4 @@
-interface Options {
+export interface Options {
   viewport: null | Element
   modTop: string
   modRight: string
@@ -7,13 +7,13 @@ interface Options {
   threshold: number[]
 }
 
-interface CustomEntry extends IntersectionObserverEntry {
+export interface CustomEntry extends IntersectionObserverEntry {
   isInViewport?: boolean
 }
 
-type UnobserveFn = () => void
+export type UnobserveFn = () => void
 
-type Handler = (entry: CustomEntry, unobserveFn: UnobserveFn, el: Element) => any
+export type Handler = (entry: CustomEntry, unobserveFn: UnobserveFn, el: Element) => any
 
 const defaultOptions: Options = {
   // null for window, otherwise give css selector.
@@ -40,7 +40,7 @@ const defaultOptions: Options = {
  * common order so as to make it easier to observe multiple DOM nodes
  * with the same settings/options and maybe even the same handlers.
  *
- * @param {Node} el - target element to observe
+ * @param {Node} target - target element to observe
  * and intersection threshold
  * @param {function} inHandler - fn to call when element is in viewport
  * for each given threshhold
@@ -50,12 +50,12 @@ const defaultOptions: Options = {
  * @return {function} unobserve element function
  */
 export function observeElementInViewport(
-  el: Element | null,
+  target: Element | null,
   inHandler: Handler,
   outHandler: Handler = () => undefined,
   opts: Partial<Options> = {}
 ): UnobserveFn {
-  if (!el) {
+  if (!target) {
     throw new Error('Target element to observe should be a valid DOM Node')
   }
 
@@ -92,8 +92,8 @@ export function observeElementInViewport(
   }
 
   const cb = (entries: IntersectionObserverEntry[], observer: IntersectionObserver): void => {
-    const entryForEl: CustomEntry = entries.filter(entry => entry.target === el)[0]
-    const unobserve: UnobserveFn = () => observer.unobserve(el)
+    const entryForEl: CustomEntry = entries.filter(entry => entry.target === target)[0]
+    const unobserve: UnobserveFn = () => observer.unobserve(target)
 
     if (entryForEl) {
       const { isIntersecting, intersectionRatio } = entryForEl
@@ -101,18 +101,18 @@ export function observeElementInViewport(
       entryForEl.isInViewport = isIntersecting && intersectionRatio >= minThreshold
 
       if (entryForEl.isInViewport) {
-        inHandler(entryForEl, unobserve, el)
+        inHandler(entryForEl, unobserve, target)
       } else {
-        outHandler(entryForEl, unobserve, el)
+        outHandler(entryForEl, unobserve, target)
       }
     }
   }
 
   const intersectionObserver = new IntersectionObserver(cb, intersectionObserverOptions)
 
-  intersectionObserver.observe(el)
+  intersectionObserver.observe(target)
 
-  return () => intersectionObserver.unobserve(el)
+  return () => intersectionObserver.unobserve(target)
 }
 
 // The function can return Promise that resolves to boolean or an object since in JS
