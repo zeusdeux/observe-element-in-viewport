@@ -1,11 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es2018",
-    "module": "umd",
     "lib": ["es2018", "dom"],
     "sourceMap": true,
     "project": "./",
-    "outDir": "./dist",
     "rootDir": "./",
 
     "strict": true,
