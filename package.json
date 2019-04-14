@@ -1,15 +1,15 @@
 {
   "name": "observe-element-in-viewport",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Wrapper around IntersectionObserver to hide away its weirdness and increase ease of usability",
   "main": "dist/es5-cjs/src/index.js",
   "types": "dist/es5-cjs/src/index.d.ts",
   "module": "dist/es9-esm/src/index.js",
   "scripts": {
     "test": "echo \"TODO: Add tests\" && exit 1",
-    "build": "npm run build:es5 && npm run build:esm",
-    "build:es5": "tsc --p ./tsconfig.es5.cjs.json",
-    "build:esm": "tsc --p ./tsconfig.es9.esm.json",
+    "build": "npm run build:cjs && npm run build:esm",
+    "build:cjs": "tsc -p ./tsconfig.es5.cjs.json",
+    "build:esm": "tsc -p ./tsconfig.es9.esm.json",
     "prepare": "npm run build",
     "watch": "fswatch -0 -o src/index.ts ./tsconfig.es5.cjs.json ./tsconfig.es9.esm.json | xargs -0 -n1 -I% `which bash` -c 'echo \"----Starting building and bundling at $(date)---\" && npm run build && echo \"----Done building and bundling at $(date)---\"'"
   },
