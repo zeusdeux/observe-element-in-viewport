@@ -4,7 +4,7 @@ export interface Options {
   modRight: string
   modBottom: string
   modLeft: string
-  threshold: number[]
+  threshold: number | number[]
 }
 
 export interface CustomEntry extends IntersectionObserverEntry {
