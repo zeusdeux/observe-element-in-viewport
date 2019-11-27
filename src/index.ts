@@ -82,15 +82,6 @@ export function observeElementInViewport(
     threshold: thresholdArray
   }
 
-  const isDebugEnabled: boolean =
-    localStorage.debug && localStorage.debug.includes('observeElementInViewport')
-
-  if (isDebugEnabled) {
-    /* tslint:disable:no-console */
-    console.log('IntersectionObserver options', intersectionObserverOptions)
-    /* tslint:enable:no-console */
-  }
-
   const cb = (entries: IntersectionObserverEntry[], observer: IntersectionObserver): void => {
     const entryForEl: CustomEntry = entries.filter(entry => entry.target === target)[0]
     const unobserve: UnobserveFn = () => observer.unobserve(target)
