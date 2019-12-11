@@ -15,23 +15,6 @@ export type UnobserveFn = () => void
 
 export type Handler = (entry: CustomEntry, unobserveFn: UnobserveFn, el: Element) => any
 
-const defaultOptions: Options = {
-  // null for window, otherwise give css selector.
-  // el to be observed should be a child of element given by this selector
-  viewport: null,
-
-  // accepts px and %
-  modTop: '0px',
-  modRight: '0px',
-  modBottom: '0px',
-  modLeft: '0px',
-
-  // percentage of el that should intersect with viewport to consinder
-  // it "in viewport". 0 means on the 1st pixel intersection or exit,
-  // the respective handler will be called
-  threshold: [0]
-}
-
 /**
  * Given a set of options, DOM node and in and out of viewport handlers,
  * this function uses an IntersectionObserver to figure out whether
@@ -55,6 +38,23 @@ export function observeElementInViewport(
   outHandler: Handler = () => undefined,
   opts: Partial<Options> = {}
 ): UnobserveFn {
+  const defaultOptions: Options = {
+    // null for window, otherwise give css selector.
+    // el to be observed should be a child of element given by this selector
+    viewport: null,
+
+    // accepts px and %
+    modTop: '0px',
+    modRight: '0px',
+    modBottom: '0px',
+    modLeft: '0px',
+
+    // percentage of el that should intersect with viewport to consinder
+    // it "in viewport". 0 means on the 1st pixel intersection or exit,
+    // the respective handler will be called
+    threshold: [0]
+  }
+
   if (!target) {
     throw new Error('Target element to observe should be a valid DOM Node')
   }

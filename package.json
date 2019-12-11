@@ -5,6 +5,7 @@
   "main": "dist/es5-cjs/src/index.js",
   "types": "dist/es5-cjs/src/index.d.ts",
   "module": "dist/es9-esm/src/index.js",
+  "sideEffects": false,
   "scripts": {
     "test": "echo \"TODO: Add tests\" && exit 1",
     "build": "npm run build:cjs && npm run build:esm",
