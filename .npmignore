@@ -1,0 +1,6 @@
+.prettierrc
+.github/
+examples/
+.tern-*
+.cache/
+tslint.json
