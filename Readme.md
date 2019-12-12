@@ -11,6 +11,28 @@ viewport.
 npm install observe-element-in-viewport
 ```
 
+or grab it directly from [`unpkg`](https://unpkg.com/) and include it in your html as
+
+```html
+<!-- will fetch UMD build -->
+<script src="https://unpkg.com/observe-element-in-viewport"></script>
+<!-- or below to fetch the es module build -->
+<script type="module" src="https://unpkg.com/observe-element-in-viewport?module"></script>
+```
+
+or directly in your javascript as below which will import the latest version of `observe-element-in-viewport`.
+
+```js
+import {
+  observeElementInViewport,
+  isInViewport
+} from 'https://unpkg.com/observe-element-in-viewport?module'
+```
+
+#### Note
+
+> For more information on how to get specific versions from `unpkg`, [have a look at their webpage](https://unpkg.com/).
+
 ## Usage
 
 ### Observing a `target` element
