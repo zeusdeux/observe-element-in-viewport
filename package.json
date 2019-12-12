@@ -2,17 +2,17 @@
   "name": "observe-element-in-viewport",
   "version": "0.0.14",
   "description": "Wrapper around IntersectionObserver to hide away its weirdness and increase ease of usability",
-  "main": "dist/es5-cjs/src/index.js",
-  "types": "dist/es5-cjs/src/index.d.ts",
+  "main": "dist/es5-umd/src/index.js",
+  "types": "dist/es5-umd/src/index.d.ts",
   "module": "dist/es9-esm/src/index.js",
   "sideEffects": false,
   "scripts": {
     "test": "echo \"TODO: Add tests\" && exit 1",
-    "build": "npm run build:cjs && npm run build:esm",
-    "build:cjs": "tsc -p ./tsconfig.es5.cjs.json",
+    "build": "npm run build:umd && npm run build:esm",
     "build:esm": "tsc -p ./tsconfig.es9.esm.json",
+    "build:umd": "tsc -p ./tsconfig.es5.umd.json",
     "prepare": "npm run build",
-    "watch": "fswatch -0 -o src/index.ts ./tsconfig.es5.cjs.json ./tsconfig.es9.esm.json | xargs -0 -n1 -I% `which bash` -c 'echo \"----Starting building and bundling at $(date)---\" && npm run build && echo \"----Done building and bundling at $(date)---\"'"
+    "watch": "fswatch -0 -o src/index.ts ./tsconfig.es5.umd.json ./tsconfig.es9.esm.json | xargs -0 -n1 -I% `which bash` -c 'echo \"----Starting building and bundling at $(date)---\" && npm run build && echo \"----Done building and bundling at $(date)---\"'"
   },
   "keywords": [
     "IntersectionObserver",
