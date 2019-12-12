@@ -6,3 +6,4 @@ examples/
 tslint.json
 tsconfig.*
 src/
+.rts2_cache*/

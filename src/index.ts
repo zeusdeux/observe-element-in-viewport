@@ -108,7 +108,7 @@ export function observeElementInViewport(
 
 // The function can return Promise that resolves to boolean or an object since in JS
 // anything can be thrown thus we cannot not know what we reject with in the catch block
-export const isInViewport = async (
+export const isInViewport = (
   el: Element | null,
   opts: Partial<Options> = {}
 ): Promise<boolean | {}> => {

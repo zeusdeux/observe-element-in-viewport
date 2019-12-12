@@ -2,17 +2,20 @@
   "name": "observe-element-in-viewport",
   "version": "0.0.15",
   "description": "Wrapper around IntersectionObserver to hide away its weirdness and increase ease of usability",
-  "main": "dist/es5-umd/src/index.js",
-  "types": "dist/es5-umd/src/index.d.ts",
-  "module": "dist/es9-esm/src/index.js",
+  "source": "src/index.ts",
+  "main": "dist/index.umd.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/src/index.d.ts",
   "sideEffects": false,
   "scripts": {
     "test": "echo \"TODO: Add tests\" && exit 1",
-    "build": "npm run build:umd && npm run build:esm",
-    "build:esm": "tsc -p ./tsconfig.es9.esm.json",
-    "build:umd": "tsc -p ./tsconfig.es5.umd.json",
+    "clean": "rimraf dist",
+    "typecheck": "tsc --noEmit -p .",
+    "lint": "tslint -p ./tsconfig.json",
+    "bundle": "microbundle build -f es,umd --tsconfig ./tsconfig.json",
+    "build": "npm run clean && npm run typecheck && npm run lint && npm run bundle",
     "prepare": "npm run build",
-    "watch": "fswatch -0 -o src/index.ts ./tsconfig.es5.umd.json ./tsconfig.es9.esm.json | xargs -0 -n1 -I% `which bash` -c 'echo \"----Starting building and bundling at $(date)---\" && npm run build && echo \"----Done building and bundling at $(date)---\"'"
+    "watch": "fswatch -0 -o src/index.ts ./tsconfig.json | xargs -0 -n1 -I% `which bash` -c 'echo \"----Starting building and bundling at $(date)---\" && npm run build && echo \"----Done building and bundling at $(date)---\"'"
   },
   "keywords": [
     "IntersectionObserver",
@@ -23,7 +26,9 @@
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
+    "microbundle": "^0.11.0",
     "prettier": "^1.14.3",
+    "rimraf": "^3.0.0",
     "tslint": "^5.11.0",
     "typescript": "^3.0.3"
   },
