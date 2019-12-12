@@ -4,3 +4,5 @@ examples/
 .tern-*
 .cache/
 tslint.json
+tsconfig.*
+src/
